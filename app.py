@@ -1,7 +1,12 @@
 #pip installed
 from flask import Flask, redirect
 from flask_login import LoginManager, login_required, current_user
+
+#db
 from mongoengine import *
+
+#auth
+from passlib.hash import sha256_crypt
 
 #i defined these
 from user import User
@@ -37,16 +42,18 @@ def test_main():
         print(comp)
     except:
         #not found in db, redirect to login    
-
+        print("an exception yo")
     #add_user()
 
     
 
 @app.route('/')
 def main():
-    #case1: user does not have hackru account
-    #case2: user has hackRU account, but his flask_login not initialized yet
-    #case3: user has hackRU account and his flask_login already initialized
+    #assume that if user has hackru account, he is already in db
+
+    #case1: user does not have food account 
+    #case2: user has food account, but his flask_login not initialized yet
+    #case3: user has food account and his flask_login already initialized
 
     return redirect("/dashboard")
 
@@ -61,18 +68,23 @@ def dashboard():
 def login(): 
 
     form = LoginForm()
+
+    #same as .is_submitted() and .validate()
+    #is_submitted() returns true if form is an active request
+    #and the method is POST, PUT, PATCH, DELETE
     if form.validate_on_submit():
 
-        #user = User(request.form['username'])
-        user = User('andrea')        
+        user = User(request.form['username'], request.form['password'])        
 
         if user.is_authenticated():
-            login_user(user) #this works by calling load_user 
+            login_user(user, remember = True) #this works by calling load_user 
             return redirect("/dashboard")       
         else: 
             return redirect("/err")
     #call LCS endpoint, probably
     print("this is user login")
+
+@app.route()
 
 @app.route('/err')
 def errorr():

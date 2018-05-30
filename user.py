@@ -3,8 +3,9 @@ from models import User_db
 
 class User(UserMixin):
 
-    def __init__(self, uname):
+    def __init__(self, username, password):
         self.username = uname
+        self.password = password
 
         #time since last challenge accepted
         #the right hand side queries 'fooddb' database
