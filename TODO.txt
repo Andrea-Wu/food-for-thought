@@ -1,0 +1,15 @@
+integrate forms...done
+implement registration...users added to db
+make user.is_authenticated work with sha256 password hashing
+right now, I'm redirecting to /err when I don't know what to do. #CHANGE 
+
+Test User Info:
+My name is Yon Yonson,
+I live in Wisconsin.
+I work in a lumber yard there.
+The people I meet as
+I walk down the street,
+They say "Hello!"
+I say "Hello!"
+They say "What's your name."
+I say: My name is Yon Yonson... 

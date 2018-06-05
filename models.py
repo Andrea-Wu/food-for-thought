@@ -6,8 +6,7 @@ class User_db(Document):
     completed = IntField(min_value = 0, default = 0)
 
     #counted in seconds
-    counter =  IntField(min_value = 0)
-    is_doing_challenge = BooleanField(default = False)
+    counter =  IntField(min_value = 0, default=0)
 
 #class Challenges(Document):
 

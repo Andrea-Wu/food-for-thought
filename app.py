@@ -10,7 +10,7 @@ from passlib.hash import sha256_crypt
 
 #i defined these
 from user import User
-from form import LoginForm
+from form import LoginForm, RegistrationForm
 from models import User_db
 
 #initialize app
@@ -32,7 +32,7 @@ def load_user(user_id):
 #connect to database
 
 def test_main():
-    return redirect("/login")
+    return redirect("/register")
     
 
 @app.route('/')
@@ -43,7 +43,7 @@ def main():
     #case2: user has food account, but his flask_login not initialized yet
     #case3: user has food account and his flask_login already initialized
 
-    return redirect("/login")
+    return redirect("/register")
 
 @login_required
 @app.route('/dashboard')
@@ -73,6 +73,26 @@ def login():
     #call LCS endpoint, probably
 
     return render_template('login.html', form=form)
+
+
+@app.route('/register', methods=["GET","POST"])
+def register():
+    form = RegistrationForm()
+
+    #supposedly this can be solved withh form.validate_on_submit
+    #but it was not working. I'll figure out why #LATER
+    if form.validate and request.method == "POST":
+
+        #hash password
+        hash_pw = sha256_crypt.hash(request.form['password'])
+
+        #store data in db
+        new_user = User_db(username = request.form['username'], password = hash_pw).save()
+
+        return redirect("/err") #CHANGE
+                            
+        
+    return render_template("register.html", form = form)
 
 
 @app.route('/err')

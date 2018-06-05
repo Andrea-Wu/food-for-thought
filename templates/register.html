@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>THE LOGIN PAGE</title>
+  </head>
+
+  <body>
+
+    <form action="" method="post">
+      {{form.csrf}}
+
+      <div class="input text">
+        {{form.username.label}} {{form.username}}
+        <br>
+        {{form.password.label}} {{form.password}}
+        <br>
+        {{form.confirm.label}} {{form.confirm}}
+        <br>
+      </div>
+
+      <div class="input submit">
+        <input type="submit" value="Submit">
+      </div> 
+    </form>
+  <body>
+
+</html>
