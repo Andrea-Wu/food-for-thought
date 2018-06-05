@@ -1,5 +1,5 @@
 #pip installed
-from flask import Flask, redirect
+from flask import Flask, redirect, request, render_template
 from flask_login import LoginManager, login_required, current_user
 
 #db
@@ -32,19 +32,7 @@ def load_user(user_id):
 #connect to database
 
 def test_main():
-    print("this is the test main")
-    print("testing how to query if key exists in db")
-    
-   # add_user()
-    
-    try:
-        comp = User_db.objects.get(username = 'sidney').counter
-        print(comp)
-    except:
-        #not found in db, redirect to login    
-        print("an exception yo")
-    #add_user()
-
+    return redirect("/login")
     
 
 @app.route('/')
@@ -55,7 +43,7 @@ def main():
     #case2: user has food account, but his flask_login not initialized yet
     #case3: user has food account and his flask_login already initialized
 
-    return redirect("/dashboard")
+    return redirect("/login")
 
 @login_required
 @app.route('/dashboard')
@@ -64,7 +52,7 @@ def dashboard():
     
         
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login(): 
 
     form = LoginForm()
@@ -72,8 +60,9 @@ def login():
     #same as .is_submitted() and .validate()
     #is_submitted() returns true if form is an active request
     #and the method is POST, PUT, PATCH, DELETE
-    if form.validate_on_submit():
 
+    #validation deals with whether the form has all fields filled, are long enough, etc
+    if form.validate and request.method == "POST":
         user = User(request.form['username'], request.form['password'])        
 
         if user.is_authenticated():
@@ -82,13 +71,14 @@ def login():
         else: 
             return redirect("/err")
     #call LCS endpoint, probably
-    print("this is user login")
 
-@app.route()
+    return render_template('login.html', form=form)
+
 
 @app.route('/err')
 def errorr():
     print("ya fucked")
+    return render_template('ya_fucked.html')
 
 def add_user():
     #add to mongodb
@@ -102,7 +92,7 @@ def add_user():
 
 #for checking if the code compiles
 if __name__ == "__main__":
-    test_main()
+    app.run(host='0.0.0.0', port=4096)
 
 
 
