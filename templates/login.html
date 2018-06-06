@@ -13,18 +13,16 @@
         {% endif %}
     {% endwith %}
     <form action="" method="post">
-      {{form.csrf}}
+      {{form.csrf_token}}
 
       <div class="input text">
         {{form.username.label}} {{form.username}}
         <br>
         {{form.password.label}} {{form.password}}
         <br>
+        {{form.submit.label}} {{form.submit}}
       </div>
 
-      <div class="input submit">
-        <input type="submit" value="Submit">
-      </div> 
     </form>
   <body>
 

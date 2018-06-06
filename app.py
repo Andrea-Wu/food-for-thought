@@ -69,7 +69,8 @@ def login():
     #and the method is POST, PUT, PATCH, DELETE
 
     #validation deals with whether the form has all fields filled, are long enough, etc
-    if form.validate and request.method == "POST":
+    if form.validate_on_submit():
+        print(form.errors)
         uname = request.form['username']
 
         passwd =  request.form['password']        
@@ -87,6 +88,7 @@ def login():
             return redirect("/login")
     #call LCS endpoint, probably
 
+    print(form.errors)
     return render_template('login.html', form=form)
 
 
@@ -95,9 +97,11 @@ def login():
 def register():
     form = RegistrationForm()
 
-    #supposedly this can be solved withh form.validate_on_submit
-    #but it was not working. I'll figure out why #LATER
-    if form.validate and request.method == "POST":
+    
+    if form.validate_on_submit():
+        
+        print(request.form['password'])
+        print(request.form['confirm'])
 
         #hash password
         hash_pw = sha256_crypt.hash(request.form['password'])
@@ -105,9 +109,10 @@ def register():
         #store data in db
         new_user = User_db(username = request.form['username'], password = hash_pw).save()
 
-        return redirect("/err") #CHANGE
+        return redirect("/login") #CHANGE
                             
         
+    print(form.errors)
     return render_template("register.html", form = form)
 
 

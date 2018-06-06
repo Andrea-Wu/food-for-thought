@@ -1,15 +1,18 @@
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from wtforms import BooleanField, StringField, PasswordField, SubmitField, validators
+from flask_wtf import FlaskForm
 #yike
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     username = StringField("Username", [validators.Length(min=4, max=25), 
                                         validators.DataRequired()])
     password = PasswordField("Password", [validators.DataRequired()])
+    submit = SubmitField("submit")
 
+class RegistrationForm(FlaskForm):
+    username = StringField("Username", validators=[validators.Length(min=4, max=25), 
+                        validators.InputRequired()])
 
-class RegistrationForm(Form):
-    username = StringField("Username", [validators.Length(min=4, max=25), 
-                        validators.DataRequired(), 
-                        validators.EqualTo("confirm", message="passwords must match")])
-
-    password = PasswordField("Password", [validators.DataRequired()])
-    confirm = PasswordField("Confirm Password", [validators.DataRequired()])
+    password = PasswordField("Password", validators=[validators.InputRequired(), 
+                                         validators.EqualTo("confirm", message="passwords must match")])
+    
+    confirm = PasswordField("Confirm Password")
+    submit = SubmitField("submit")
