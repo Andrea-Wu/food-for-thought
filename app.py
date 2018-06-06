@@ -1,6 +1,6 @@
 #pip installed
-from flask import Flask, redirect, request, render_template
-from flask_login import LoginManager, login_required, current_user
+from flask import Flask, redirect, request, render_template, flash
+from flask_login import LoginManager, login_required, current_user, login_user
 
 #db
 from mongoengine import *
@@ -16,6 +16,8 @@ from models import User_db
 #initialize app
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = "shhhhh"
+
 #initialize login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,12 +29,14 @@ connect('fooddb')
 #callback function for login_user
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id) 
+    try:
+        user = User_db.objects.get(user_id) #this might break
+    except:
+        user = None
+
+    return user
 
 #connect to database
-
-def test_main():
-    return redirect("/register")
     
 
 @app.route('/')
@@ -43,14 +47,17 @@ def main():
     #case2: user has food account, but his flask_login not initialized yet
     #case3: user has food account and his flask_login already initialized
 
-    return redirect("/register")
+    return redirect("/login")
 
 @login_required
 @app.route('/dashboard')
 def dashboard():
     print("this is dashboard")
+    return render_template("dashboard.html")
     
         
+
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login(): 
@@ -63,16 +70,25 @@ def login():
 
     #validation deals with whether the form has all fields filled, are long enough, etc
     if form.validate and request.method == "POST":
-        user = User(request.form['username'], request.form['password'])        
+        uname = request.form['username']
 
-        if user.is_authenticated():
+        passwd =  request.form['password']        
+
+
+    
+        if verify_password(uname, passwd):
+            print("password correct!")
+            user = User(uname, passwd)
             login_user(user, remember = True) #this works by calling load_user 
             return redirect("/dashboard")       
         else: 
-            return redirect("/err")
+            print("yer password was wrong")
+            flash("bad login")
+            return redirect("/login")
     #call LCS endpoint, probably
 
     return render_template('login.html', form=form)
+
 
 
 @app.route('/register', methods=["GET","POST"])
@@ -100,14 +116,21 @@ def errorr():
     print("ya fucked")
     return render_template('ya_fucked.html')
 
-def add_user():
-    #add to mongodb
-    #does not actually create instance of User
 
-    #.save() saves user to mongodb database
-    new_user = User_db(username='andrea', completed=0, 
-                    counter = 5,
-                    is_doing_challenge = False).save()
+def verify_password(username, password):
+    #If they are equal, return true
+   
+    print("verifying password")
+    
+    #err check for if username exists in db
+    try:
+        stored_pw = User_db.objects.get(username=username).password
+    except: 
+        return False        
+
+    return sha256_crypt.verify(password, stored_pw)
+    
+    
 
 
 #for checking if the code compiles

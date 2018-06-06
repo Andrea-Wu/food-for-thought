@@ -6,7 +6,6 @@ class User(UserMixin):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-
         #time since last challenge accepted
         #the right hand side queries 'fooddb' database
         try:
@@ -22,16 +21,13 @@ class User(UserMixin):
 
     
     def is_authenticated(self):
-        print("user.is_authenticated")
-        return True #CHANGE
+        return User_db.objects.get(username = self.username).authenticated 
 
     def is_active(self):
-        print("user.is_active")
-        return True 
+        return self.is_authenticated()
 
     def is_anonymous(self):
-        print("user.is_anonymous")
-        return False
+        return not self.is_authenticated()
 
     def get_id(self):
-        print("user.get_id")
+        return self.username
