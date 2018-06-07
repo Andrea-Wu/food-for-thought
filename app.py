@@ -86,6 +86,11 @@ def login():
             print("yer password was wrong")
             flash("bad login")
             return redirect("/login")
+    elif request.method == "POST":
+        #post, but not validated
+        flash("bad login")
+        return redirect("/login")
+        
     #call LCS endpoint, probably
 
     print(form.errors)
@@ -110,7 +115,9 @@ def register():
         new_user = User_db(username = request.form['username'], password = hash_pw).save()
 
         return redirect("/login") #CHANGE
-                            
+    elif request.method == "POST":
+        flash("bad registration")
+        return redirect("/register")                    
         
     print(form.errors)
     return render_template("register.html", form = form)

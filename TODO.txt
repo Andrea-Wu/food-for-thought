@@ -1,12 +1,13 @@
 integrate forms...done
 implement registration...users added to db
 make user.is_authenticated work with sha256 password hashing...done
-right now, I'm redirecting to /err when I don't know what to do. #CHANGE 
+right now, I'm redirecting to /err when I don't know what to do...done 
 fix stupid db workaround where there's a try/catch in User init
 maybe make the secret key something secret
-access the "register" page from the "login" page
-the "confirm" field doesn't match "password", but it still registers
-deal with validation errors
+access the "register" page from the "login" page...done
+the "confirm" field doesn't match "password", but it still registers...done
+deal with validation errors...done
+tell users why their login was bad
 future...
 make a frontend
 
@@ -24,6 +25,7 @@ I say: My name is Yon Yonson...
 
 
 my fucking debugging log:
+    -note that wtforms and flask_wtf behave extremely differently. 
     -I didn't realize that the csrf token had to be called form.csrf_token, not form.csrf
     -flask wtforms has a debugging log: this will be useful for future things
     what is causing validators to break?
