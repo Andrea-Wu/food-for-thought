@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  </head>
+
+  <body>
+    <p>This is the admin page</p>
+
+    <form action="" method="post">
+         {{form.csrf_token}}
+        <div class="input text">
+            {{form.title.label}} {{form.title}}
+        <br>
+            {{form.body.label}} {{form.body(class_="largeInput")}}
+        <br>
+            {{form.submit.label}} {{form.submit}}
+        </div>
+                
+    </form>        
+
+    <br>
+    <a href="/dashboard">return to dashboard</a>
+  </body>
+
+</html>

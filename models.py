@@ -9,10 +9,10 @@ class User_db(Document):
 
     #counted in seconds
     counter =  IntField(min_value = 0)
-
+ 
+    authenticated = BooleanField(required=True, default=False) #idk if necessary
     
-    
-    authenticated = BooleanField(required=True, default=False)
+    is_admin = BooleanField(required=True, default=False)
 
 
 #class Challenges(Document):

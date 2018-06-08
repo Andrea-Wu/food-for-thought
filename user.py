@@ -19,3 +19,8 @@ class User(UserMixin):
         except:
             self.completed = 0
 
+        try:
+            self.is_admin = User_db.objects.get(id = username).is_admin
+        except:
+            self.is_admin = False
+

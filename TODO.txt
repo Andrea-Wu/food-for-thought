@@ -17,7 +17,7 @@ TODO
     -there will be (20) challenges
     -function that displays a challenge as a html page, via templates
         -function will take in an integer. if user tries to access it otherwise, err
-
+-add an admin page, for convenience
 IMPLEMENTATION
 -store active challenges as a Listfield. 
 

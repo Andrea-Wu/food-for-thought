@@ -12,8 +12,9 @@ from passlib.hash import sha256_crypt
 
 #i defined these
 from user import User
-from form import LoginForm, RegistrationForm
+from form import LoginForm, RegistrationForm, ChallengeForm
 from models import User_db
+from challenge import Challenge
 
 #initialize app
 app = Flask(__name__)
@@ -28,6 +29,8 @@ login_manager.login_view = '/login'
 
 #connect to database
 connect('fooddb')
+
+
 
 #callback function for login_user
 @login_manager.user_loader
@@ -48,9 +51,12 @@ def load_user(user_id):
 def main():
     #assume that if user has hackru account, he is already in db
 
-    #case1: user does not have food account 
-    #case2: user has food account, but his flask_login not initialized yet
-    #case3: user has food account and his flask_login already initialized
+    ##to set a user as admin. 
+
+#    user = User_db.objects.get(id="YonYonsen")
+#    user.is_admin = True
+#    user.save()
+    
 
     return redirect("/login")
 
@@ -58,8 +64,34 @@ def main():
 @login_required
 def dashboard():
     print("this is dashboard")
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", user=current_user)
 
+
+#add is_admin to user.py & models.py
+@app.route('/admin', methods=["GET", "POST"])
+@login_required
+def admin():
+    if not current_user.is_admin:
+        return redirect("/err")
+
+    print("this is the admin page")
+
+    form = ChallengeForm()
+    if form.validate_on_submit():
+        title = request.form['title']
+        body = request.form['body']
+
+        newChallenge = Challenge(0, title, body)
+        #call add_challenge 
+        
+        
+
+    return render_template("admin.html", form=form)
+    
+
+def add_challenge():
+    if not current_user.is_admin:
+        return redirect("/err")
 
 
 @app.route("/request")
@@ -84,6 +116,8 @@ def display_challenge(challenge =-1):
 
     if challenge == -1:
         return redirect("/err")
+
+
     return render_template("display.html")
 
 
