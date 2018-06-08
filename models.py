@@ -9,14 +9,14 @@ class User_db(Document):
 
     #counted in seconds
     counter =  IntField(min_value = 0)
- 
-    authenticated = BooleanField(required=True, default=False) #idk if necessary
     
     is_admin = BooleanField(required=True, default=False)
 
+    actives = ListField(IntField(min_value = 0))
+
 
 class Challenge_db(Document):
-    number = IntField(min_value=0, required=True, primary_key=True)
+    id = IntField(min_value=0, required=True, primary_key=True)
     title = StringField(required=True)
     body = StringField(required=True)
 

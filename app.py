@@ -91,7 +91,7 @@ def admin():
 
         global totalChallenges 
         totalChallenges += 1
-        newChallenge = Challenge_db(number = totalChallenges, title = title, body=body).save()
+        newChallenge = Challenge_db(id = totalChallenges, title = title, body=body).save()
         print("created challenge")
         return redirect("/admin")        
         
@@ -116,42 +116,52 @@ def request_challenge():
 def active_challenges():
     #a list of the user's active challenges...stored in db & displayed
     print("list of active challenges")
+
+    #get a list of integers corresponding to user's active challenges
+    actives = User_db.objects.get(id=current_user.id).actives
+    print("got actives")
+    #associate the integers with a challenge
+    for a in actives:
+        print(a)
+
     return render_template("actives.html")
 
 
 
 @app.route("/display")    
 @login_required
-def display_challenge(challenge =-1):
-    print("challenge is:" + str(challenge))
+def display_challenge(challengeID =-1):
+    print("challenge is:" + str(challengeID))
 
-    if challenge == -1:
+    #TESTING 
+    challengeID = 3
+
+    #this means user tried to manually access URL
+    if challengeID == -1:
         return redirect("/err")
 
+    #query db for challenge with that id
+    c = Challenge_db.objects.get(id = challengeID)
 
-    return render_template("display.html")
+     
 
 
-        
+    return render_template("display.html", challenge=c)
 
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login(): 
+
+    if current_user.is_authenticated:
+        return redirect("/dashboard")
+
     form = LoginForm()
 
-    #same as .is_submitted() and .validate()
-    #is_submitted() returns true if form is an active request
-    #and the method is POST, PUT, PATCH, DELETE
-
-    #validation deals with whether the form has all fields filled, are long enough, etc
     if form.validate_on_submit():
         print(form.errors)
         uname = request.form['username']
-
         passwd =  request.form['password']        
-
-
     
         if verify_password(uname, passwd):
             print("password correct!")

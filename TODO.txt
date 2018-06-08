@@ -12,7 +12,7 @@ TODO
 -make a frontend
 -make a logout...done
 -why can user access the dashboard without being logged in?...done
--add logged in user's name to the dashboard
+-add logged in user's name to the dashboard...done
 -implement the challenges list
     -there will be (20) challenges
     -function that displays a challenge as a html page, via templates
@@ -20,6 +20,8 @@ TODO
 -add an admin page, for convenience
 -set up mongoengine to work with multiple collections...done
 -the variable totalChallenges is now global. Make sure it is mutex locked
+-make sure each user stores info about what active challenges they currently have
+-create the "actives" page
 
 IMPLEMENTATION
 -store active challenges as a Listfield. 
