@@ -22,6 +22,9 @@ TODO
 -the variable totalChallenges is now global. Make sure it is mutex locked
 -make sure each user stores info about what active challenges they currently have
 -create the "actives" page
+-create a decorator function to make sure some pgs can only be accessd from certain pgs
+-what if user manually changes url parameters?
+
 
 IMPLEMENTATION
 -store active challenges as a Listfield. 
@@ -60,3 +63,9 @@ LOGIN_REQUIRED
 USER
     -there is no point of storing the password in user.py
     -load_user has to return a legit User object. (flask documentation was abstraction)
+REQUEST.args
+    -are different than the arguments passed to a function
+
+
+
+

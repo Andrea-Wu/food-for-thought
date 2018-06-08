@@ -118,23 +118,28 @@ def active_challenges():
     print("list of active challenges")
 
     #get a list of integers corresponding to user's active challenges
-    actives = User_db.objects.get(id=current_user.id).actives
+    activeInts = User_db.objects.get(id=current_user.id).actives
     print("got actives")
-    #associate the integers with a challenge
-    for a in actives:
-        print(a)
 
-    return render_template("actives.html")
+    #associate each integer with a corresponding challenge
+    activeChals = []
+    for a in activeInts:
+        chal = Challenge_db.objects.get(id = a)
+        print(chal.title)
+        activeChals.append(chal)
+
+    return render_template("actives.html", activeChals = activeChals)
 
 
 
 @app.route("/display")    
 @login_required
-def display_challenge(challengeID =-1):
+def display_challenge():
+
+    challengeID = request.args.get("challengeID", default=-1)
+
     print("challenge is:" + str(challengeID))
 
-    #TESTING 
-    challengeID = 3
 
     #this means user tried to manually access URL
     if challengeID == -1:
@@ -143,6 +148,8 @@ def display_challenge(challengeID =-1):
     #query db for challenge with that id
     c = Challenge_db.objects.get(id = challengeID)
 
+    #what if user manually chnges url param?
+    
      
 
 

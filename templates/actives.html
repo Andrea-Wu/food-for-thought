@@ -4,7 +4,14 @@
   </head>
 
   <body>
-    <p>A list of active challenges</p>
+    <h3>A list of active challenges</h3>
+
+    <ul>
+    {% for a in activeChals %}
+    <li><a href="/display?challengeID={{a.id}}">{{a.title}}</a></li>
+
+    {% endfor %}
+    <ul>
   </body>
 
 </html>
