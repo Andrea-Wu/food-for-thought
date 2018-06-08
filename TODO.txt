@@ -1,15 +1,28 @@
-integrate forms...done
-implement registration...users added to db
-make user.is_authenticated work with sha256 password hashing...done
-right now, I'm redirecting to /err when I don't know what to do...done 
-fix stupid db workaround where there's a try/catch in User init
-maybe make the secret key something secret
-access the "register" page from the "login" page...done
-the "confirm" field doesn't match "password", but it still registers...done
-deal with validation errors...done
-tell users why their login was bad
-future...
-make a frontend
+TODO
+-integrate forms...done
+-implement registration...users added to db
+-make user.is_authenticated work with sha256 password hashing...done
+-right now, I'm redirecting to /err when I don't know what to do...done 
+-fix stupid db workaround where there's a try/catch in User init
+-maybe make the secret key something secret
+-access the "register" page from the "login" page...done
+-the "confirm" field doesn't match "password", but it still registers...done
+-deal with validation errors...done
+-tell users why their login/registration was bad
+-make a frontend
+-make a logout...done
+-why can user access the dashboard without being logged in?...done
+-add logged in user's name to the dashboard
+-implement the challenges list
+    -there will be (20) challenges
+    -function that displays a challenge as a html page, via templates
+        -function will take in an integer. if user tries to access it otherwise, err
+
+IMPLEMENTATION
+-store active challenges as a Listfield. 
+
+
+
 
 
 Test User Info:
@@ -25,6 +38,7 @@ I say: My name is Yon Yonson...
 
 
 my fucking debugging log:
+WTFORMS
     -note that wtforms and flask_wtf behave extremely differently. 
     -I didn't realize that the csrf token had to be called form.csrf_token, not form.csrf
     -flask wtforms has a debugging log: this will be useful for future things
@@ -32,3 +46,12 @@ my fucking debugging log:
         -submit button has to be a SubmitField button in forms.py?
         -MUST use forms.validate_on_submit(), not forms.validate() && request == POST
             -option2 fixed it, but not sure if option1 makes a difference. test later. 
+IS_AUTHENTICATED
+    -flask_login expects the user's primary key to be called "id".
+    -it should be called "id" in User.py, so that the UserMixin can use it properly
+    -not sure if it needs to be called "id" in models.py.
+LOGIN_REQUIRED
+    -the login_required decorator must be used after the app.route decorator
+USER
+    -there is no point of storing the password in user.py
+    -load_user has to return a legit User object. (flask documentation was abstraction)

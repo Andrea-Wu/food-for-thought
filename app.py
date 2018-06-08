@@ -1,6 +1,8 @@
 #pip installed
 from flask import Flask, redirect, request, render_template, flash
-from flask_login import LoginManager, login_required, current_user, login_user
+from flask_login import LoginManager, login_required, current_user
+from flask_login import login_user, logout_user
+#making sure it fits my screen srry
 
 #db
 from mongoengine import *
@@ -17,6 +19,7 @@ from models import User_db
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "shhhhh"
+app.config['TESTING'] = False
 
 #initialize login manager
 login_manager = LoginManager()
@@ -30,11 +33,13 @@ connect('fooddb')
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        user = User_db.objects.get(user_id) #this might break
+        user = User_db.objects.get(id = user_id) #this might break
+        print("user loaded")
     except:
-        user = None
+        print("user not found")
+        return None
 
-    return user
+    return User(user.id)
 
 #connect to database
     
@@ -49,11 +54,29 @@ def main():
 
     return redirect("/login")
 
-@login_required
 @app.route('/dashboard')
+@login_required
 def dashboard():
     print("this is dashboard")
     return render_template("dashboard.html")
+
+
+
+@app.route("/request")
+@login_required
+def request_challenge():
+    print("this is the request challenge page")
+
+
+@app.route("/actives")
+@login_required
+def active_challenges():
+    #a list of the user's active challenges...stored in db & displayed
+    print("list of active challenges")
+    return render_template("actives.html")
+
+
+
     
         
 
@@ -79,7 +102,7 @@ def login():
     
         if verify_password(uname, passwd):
             print("password correct!")
-            user = User(uname, passwd)
+            user = User(uname)
             login_user(user, remember = True) #this works by calling load_user 
             return redirect("/dashboard")       
         else: 
@@ -101,8 +124,7 @@ def login():
 @app.route('/register', methods=["GET","POST"])
 def register():
     form = RegistrationForm()
-
-    
+ 
     if form.validate_on_submit():
         
         print(request.form['password'])
@@ -112,7 +134,7 @@ def register():
         hash_pw = sha256_crypt.hash(request.form['password'])
 
         #store data in db
-        new_user = User_db(username = request.form['username'], password = hash_pw).save()
+        new_user = User_db(id = request.form['username'], password = hash_pw).save()
 
         return redirect("/login") #CHANGE
     elif request.method == "POST":
@@ -136,12 +158,17 @@ def verify_password(username, password):
     
     #err check for if username exists in db
     try:
-        stored_pw = User_db.objects.get(username=username).password
+        stored_pw = User_db.objects.get(id =username).password
     except: 
         return False        
 
     return sha256_crypt.verify(password, stored_pw)
-    
+
+@app.route("/logout")
+@login_required    
+def logout():
+    logout_user()
+    return render_template("logout.html")
     
 
 

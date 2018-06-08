@@ -1,7 +1,7 @@
 from mongoengine import *
 
 class User_db(Document):
-    username = StringField(max_length=25, required=True, primary_key = True)
+    id = StringField(max_length=25, required=True, primary_key = True)
     password = StringField(required=True)
     
     #no default??
@@ -9,8 +9,11 @@ class User_db(Document):
 
     #counted in seconds
     counter =  IntField(min_value = 0)
+
+    
     
     authenticated = BooleanField(required=True, default=False)
+
 
 #class Challenges(Document):
 
