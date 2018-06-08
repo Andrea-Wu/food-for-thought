@@ -77,14 +77,22 @@ def active_challenges():
 
 
 
-    
+@app.route("/display")    
+@login_required
+def display_challenge(challenge =-1):
+    print("challenge is:" + str(challenge))
+
+    if challenge == -1:
+        return redirect("/err")
+    return render_template("display.html")
+
+
         
 
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login(): 
-
     form = LoginForm()
 
     #same as .is_submitted() and .validate()
@@ -146,6 +154,7 @@ def register():
 
 
 @app.route('/err')
+@login_required
 def errorr():
     print("ya fucked")
     return render_template('ya_fucked.html')
