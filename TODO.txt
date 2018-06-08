@@ -18,6 +18,9 @@ TODO
     -function that displays a challenge as a html page, via templates
         -function will take in an integer. if user tries to access it otherwise, err
 -add an admin page, for convenience
+-set up mongoengine to work with multiple collections...done
+-the variable totalChallenges is now global. Make sure it is mutex locked
+
 IMPLEMENTATION
 -store active challenges as a Listfield. 
 

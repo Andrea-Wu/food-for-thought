@@ -13,7 +13,7 @@ from passlib.hash import sha256_crypt
 #i defined these
 from user import User
 from form import LoginForm, RegistrationForm, ChallengeForm
-from models import User_db
+from models import User_db, Challenge_db
 from challenge import Challenge
 
 #initialize app
@@ -30,6 +30,10 @@ login_manager.login_view = '/login'
 #connect to database
 connect('fooddb')
 
+
+#counts current num of challenges in database
+#might break
+totalChallenges = Challenge_db.objects.count()
 
 
 #callback function for login_user
@@ -77,16 +81,23 @@ def admin():
     print("this is the admin page")
 
     form = ChallengeForm()
+    print("form created")
     if form.validate_on_submit():
+
+        print("validated form")
         title = request.form['title']
         body = request.form['body']
 
-        newChallenge = Challenge(0, title, body)
-        #call add_challenge 
+
+        global totalChallenges 
+        totalChallenges += 1
+        newChallenge = Challenge_db(number = totalChallenges, title = title, body=body).save()
+        print("created challenge")
+        return redirect("/admin")        
         
         
 
-    return render_template("admin.html", form=form)
+    return render_template("admin.html", form=form, count=totalChallenges)
     
 
 def add_challenge():

@@ -23,5 +23,5 @@ class RegistrationForm(FlaskForm):
 
 class ChallengeForm(FlaskForm):
     title = StringField("Title", validators=[InputRequired()])
-    body = StringField("Body", validators=[InputRequired], widget=TextArea())
+    body = StringField("Body", validators=[InputRequired()], widget=TextArea())
     submit = SubmitField("submit")

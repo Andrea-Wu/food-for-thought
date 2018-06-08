@@ -15,5 +15,9 @@ class User_db(Document):
     is_admin = BooleanField(required=True, default=False)
 
 
-#class Challenges(Document):
+class Challenge_db(Document):
+    number = IntField(min_value=0, required=True, primary_key=True)
+    title = StringField(required=True)
+    body = StringField(required=True)
+
 
