@@ -145,13 +145,14 @@ def display_challenge():
     if challengeID == -1:
         return redirect("/err")
 
+    #make sure user actually has access to that challenge
+    activeChals = User_db.objects.get(id = current_user.id).actives
+
+    if not int(challengeID) in activeChals:
+        return redirect("/err")
+
     #query db for challenge with that id
     c = Challenge_db.objects.get(id = challengeID)
-
-    #what if user manually chnges url param?
-    
-     
-
 
     return render_template("display.html", challenge=c)
 

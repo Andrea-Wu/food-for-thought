@@ -23,7 +23,8 @@ TODO
 -make sure each user stores info about what active challenges they currently have
 -create the "actives" page
 -create a decorator function to make sure some pgs can only be accessd from certain pgs
--what if user manually changes url parameters?
+-what if user manually changes url parameters? 
+    -make sure user has permission to access specific challenge
 
 
 IMPLEMENTATION
