@@ -26,7 +26,8 @@ TODO
 -what if user manually changes url parameters? 
     -make sure user has permission to access specific challenge...done
 -put stats on dashboard
--create challenges
+-create challenges page
+-auto-logout after a certain time
 
 TODO urgent
 -make a javascript timer thing that counts down when an argument is passed into it
@@ -34,7 +35,7 @@ TODO urgent
 
 IMPLEMENTATION
 -store active challenges as a Listfield. 
-
+-create a separate collection that only stores a list of ints
 
 
 
@@ -71,6 +72,8 @@ USER
     -load_user has to return a legit User object. (flask documentation was abstraction)
 REQUEST.args
     -are different than the arguments passed to a function
+JAVASCRIPT INTEGRATION
+    -the "onload" function should be an attribute of the "body" tag. Can't be attached to JUST ANY old tag
 
 
 

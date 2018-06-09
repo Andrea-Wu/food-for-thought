@@ -1,16 +1,27 @@
 <html>
   <head>
-    
+      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}"> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src= "{{ url_for('static', filename='js/functions.js') }}"></script>
   </head>
-
-  <body>
+    
+  <body onload="countdown({{wait}})">
     <p>This page will have a way to request challenges</p>
     <br>
 
     <p>time until you can req is {{wait }}</p>
-    
+    <p id="display_hrs"></p>
+    <br>
 
-    <p>allow user to get challenge if possible</p>
+    <p id="display_min"></p>
+    <br>
+    
+    <p id="display_secs")></p>
+    <br>
+
+    <p id="req_button" class="hidden">allow user to get challenge</p>
+    
+    
     <a href="/dashboard">return to dashboard</a>
   </body>
 

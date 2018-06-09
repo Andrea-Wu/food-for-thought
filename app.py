@@ -42,9 +42,7 @@ totalChallenges = Challenge_db.objects.count()
 def load_user(user_id):
     try:
         user = User_db.objects.get(id = user_id) #this might break
-        print("user loaded")
     except:
-        print("user not found")
         return None
 
     return User(user.id)
@@ -124,19 +122,23 @@ def request_challenge():
     
     time_now = round(time())
     
-    #if no active challenges, then user can also request
+    #if no active challenges, then user can request
+    #TODO
 
     time_diff = time_now - time_since
     wait = 0
     if time_diff > 3600: #1 hr has elapsed since last challenge
         #user can request now
-        print("do nothing")
+        give_challenge()
     else:
         wait = 3600 - time_diff
 
     return render_template("request.html", wait=wait)
     
-    
+def give_challenge():
+    #for now, give random between 1-5 
+    #difference between 2 lists....
+    #list(set(x) -set(y))    
 
 
 @app.route("/actives")
