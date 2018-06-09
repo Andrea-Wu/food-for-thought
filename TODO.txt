@@ -20,11 +20,16 @@ TODO
 -add an admin page, for convenience
 -set up mongoengine to work with multiple collections...done
 -the variable totalChallenges is now global. Make sure it is mutex locked
--make sure each user stores info about what active challenges they currently have
--create the "actives" page
+-make sure each user stores info about what active challenges they currently have...done
+-create the "actives" page...done
 -create a decorator function to make sure some pgs can only be accessd from certain pgs
 -what if user manually changes url parameters? 
-    -make sure user has permission to access specific challenge
+    -make sure user has permission to access specific challenge...done
+-put stats on dashboard
+-create challenges
+
+TODO urgent
+-make a javascript timer thing that counts down when an argument is passed into it
 
 
 IMPLEMENTATION

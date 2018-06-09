@@ -7,7 +7,7 @@ class User_db(Document):
     #no default??
     completed = IntField(min_value = 0)
 
-    #counted in seconds
+    #counter stores time, in seconds since x, when challenge was last gotten
     counter =  IntField(min_value = 0)
     
     is_admin = BooleanField(required=True, default=False)

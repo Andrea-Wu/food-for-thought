@@ -2,6 +2,7 @@
 from flask import Flask, redirect, request, render_template, flash
 from flask_login import LoginManager, login_required, current_user
 from flask_login import login_user, logout_user
+from time import time
 #making sure it fits my screen srry
 
 #db
@@ -109,6 +110,33 @@ def add_challenge():
 @login_required
 def request_challenge():
     print("this is the request challenge page")
+
+
+    user = User_db.objects.get(id=current_user.id)
+    time_since = user.counter
+
+    
+    #if for some reason this isn't in the db (user hasn't requested challenge yet)
+    if time_since == None:
+        user.counter = time()
+        user.save()
+        time_since = user.counter
+    
+    time_now = round(time())
+    
+    #if no active challenges, then user can also request
+
+    time_diff = time_now - time_since
+    wait = 0
+    if time_diff > 3600: #1 hr has elapsed since last challenge
+        #user can request now
+        print("do nothing")
+    else:
+        wait = 3600 - time_diff
+
+    return render_template("request.html", wait=wait)
+    
+    
 
 
 @app.route("/actives")
