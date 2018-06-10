@@ -1,30 +1,44 @@
 <html>
   <head>
     <title>THE LOGIN PAGE</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
   </head>
 
   <body>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for m in messages%}
-                <p>{{m}}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form action="" method="post">
-      {{form.csrf_token}}
+    <div class="padding">
+    </div>
 
-      <div class="input text">
-        {{form.username.label}} {{form.username}}
-        <br>
-        {{form.password.label}} {{form.password}}
-        <br>
-        {{form.submit.label}} {{form.submit}}
-      </div>
-    </form>
+    <div class="center">
+      <h3>Login</h3>
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for m in messages%}
+                  <p>{{m}}</p>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+      <form action="" method="post">
+        {{form.csrf_token}}
 
-    <a href="/register">register</a>
+        <div class="input text">
+          
+          <span class="loginLabel">Username  </span>
+         {{form.username(class_="loginInput")}}
+          <br>
+          <span class="loginLabel">Password  </span>
+         {{form.password(class_="loginInput")}}
+          <br>
+          <br>
+          {{form.submit(class_="loginButton")}}
+        </div>
+      </form>
+    
+    <br><br>
+    <span>Don't have an account? Click</span>
+      <a href="/register">here</a>
+    <span>!</span>
+    </div>
   <body>
 
 </html>
