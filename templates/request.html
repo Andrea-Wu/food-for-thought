@@ -6,18 +6,30 @@
   </head>
     
   <body onload="countdown({{wait}})">
-    <p>This page will have a way to request challenges</p>
-    <br>
 
-    <p>time until you can req is {{wait }}</p>
-    <p id="display_hrs"></p>
+    {% if chal_accepted == False %}
+    <p>Time until you can request another challenge:</p>
     <br>
+    <span id="display_hrs"></span>
+    <span>:</span>
 
-    <p id="display_min"></p>
-    <br>
+    <span id="display_min"></span>
+    <span>:</span>
     
-    <p id="display_secs")></p>
+    <span id="display_secs")></span>
     <br>
+    {% endif %}
+
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for m in messages%}
+                <p>{{m}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
 
     <p id="req_button" class="hidden">allow user to get challenge</p>
     

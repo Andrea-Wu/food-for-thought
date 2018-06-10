@@ -3,6 +3,7 @@ from flask import Flask, redirect, request, render_template, flash
 from flask_login import LoginManager, login_required, current_user
 from flask_login import login_user, logout_user
 from time import time
+from random import choice
 #making sure it fits my screen srry
 
 #db
@@ -33,8 +34,15 @@ connect('fooddb')
 
 
 #counts current num of challenges in database
-#might break
 totalChallenges = Challenge_db.objects.count()
+
+#creates a list of all challenges
+#so we can do a "diff" with the user's active challenges
+chal_queryset = Challenge_db.objects
+all_chals = []
+
+for c in chal_queryset:
+    all_chals.append(int(c.id))
 
 
 #callback function for login_user
@@ -113,12 +121,20 @@ def request_challenge():
     user = User_db.objects.get(id=current_user.id)
     time_since = user.counter
 
+    print("time since is:")
+    print(time_since)
+
+    #determines whether to show timer
+    chal_accepted = False    
     
-    #if for some reason this isn't in the db (user hasn't requested challenge yet)
-    if time_since == None:
-        user.counter = time()
+    #if for some reason user.counter isn't in db (probably for testing only)
+    #or user has not requested a challenge yet
+    if time_since == None or time_since == 0:
+        user.counter = round(time())
         user.save()
         time_since = user.counter
+        give_challenge()
+        chal_accepted = True
     
     time_now = round(time())
     
@@ -126,19 +142,41 @@ def request_challenge():
     #TODO
 
     time_diff = time_now - time_since
+
     wait = 0
     if time_diff > 3600: #1 hr has elapsed since last challenge
         #user can request now
+        print("challenge given")
         give_challenge()
+        chal_accepted = True
+        user.counter = round(time())
     else:
         wait = 3600 - time_diff
 
-    return render_template("request.html", wait=wait)
+    user.save()
+
+    print("chal_accepted is:")
+    print(chal_accepted)
+
+    return render_template("request.html", wait=wait, chal_accepted=chal_accepted)
     
 def give_challenge():
-    #for now, give random between 1-5 
-    #difference between 2 lists....
-    #list(set(x) -set(y))    
+    user = User_db.objects.get(id=current_user.id)
+    
+    #diff is a list of challenges that are not in both lists
+    user_chals = user.actives
+    diff = list(set(all_chals) - set(user_chals))
+    print(diff)
+
+    #choose randomly from list
+    new_chal = choice(diff)
+    
+    user_chals.append(new_chal)
+    user.save()
+
+    flash("You have recieved a new challenge. Check your 'Active Challenges' page!")
+
+    print("random challenge " + str(new_chal) + " given to user " + user.id)
 
 
 @app.route("/actives")
@@ -228,8 +266,18 @@ def register():
  
     if form.validate_on_submit():
         
-        print(request.form['password'])
-        print(request.form['confirm'])
+        #make sure an existing user doesn't already exist
+        exists = False
+        try:
+            u = User_db.objects.get(id=(request.form['username']))
+            exists = True
+        except:
+            print("")
+
+        if exists:
+            flash("that username already exists")
+            return redirect("/register")
+        
 
         #hash password
         hash_pw = sha256_crypt.hash(request.form['password'])

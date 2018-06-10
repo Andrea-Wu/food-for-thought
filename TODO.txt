@@ -28,10 +28,12 @@ TODO
 -put stats on dashboard
 -create challenges page
 -auto-logout after a certain time
+-prevent registration if username already exists...done
 
 TODO urgent
--make a javascript timer thing that counts down when an argument is passed into it
-
+-make a javascript timer thing that counts down when an argument is passed into it...done
+-when user requests first challenge, timer shows negative times. 
+    -solve by not showing timer when user successfully gets a challenge...done
 
 IMPLEMENTATION
 -store active challenges as a Listfield. 
